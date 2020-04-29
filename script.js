@@ -17,3 +17,38 @@ function soundAlarm() {
         setTimeout(playSound, 1200 * i);
     }
 }
+
+function updateValue(key, value) {
+    if (value < 0) {
+        value = 0;
+        console.log("Positive Numbers Only");
+    }
+
+    if (key == "seconds") {
+        if (value < 10) {
+            value = "0" + value;
+        }
+        if (value > 59) {
+            value = 59;
+        }
+    }
+
+    $("#" + key).html(value || 0);
+    timeObj[key] = value;
+
+    console.log("Min:" + timeObj.minutes);
+    console.log("Second: " + timeObj.seconds);
+}
+
+(function detectChanges(key) {
+    let input = "#" + key + "-input";
+
+    $(input).change(function() {
+        updateValue(key, $(input).val());
+    });
+
+    $(input).keyup(function() {
+        updateValue(key, $(input).val());
+    });
+    return arguments.callee;
+})("minutes")("seconds");
